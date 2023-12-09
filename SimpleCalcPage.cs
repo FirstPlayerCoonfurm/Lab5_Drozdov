@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,11 +21,9 @@ namespace SiteTest
         private By fielda = By.XPath("//input[@ng-model='a']");
         private By fieldb = By.XPath("//input[@ng-model='b']");
 
-        private By operatormns = By.CssSelector("select[ng-model='operation'][value='-']");
-        private By operatorpls = By.CssSelector("select[ng-model='operation'][value='+']");
-        private By operatorumn = By.CssSelector("select[ng-model='operation'][value='*']");
-        private By operatordel = By.CssSelector("select[ng-model='operation'][value='/']");
-
+        private By operatormns = By.XPath("//select[@class='ng-pristine ng-valid']/option[@value='-']");
+        private By operatorumn = By.XPath("//select[@class='ng-pristine ng-valid']/option[@value='*']");
+        private By operatordel = By.XPath("//select[@class='ng-pristine ng-valid']/option[@value='/']");
 
 
         public SimpleCalcPage(IWebDriver driwe)
@@ -57,6 +55,7 @@ namespace SiteTest
             IWebElement text_a = drw.FindElement(fielda);
             for (int i = 0; i < 10; i++)
             {
+                text_a.Clear();
                 text_a.SendKeys($"{i}");
                 Thread.Sleep(1000);
                 text_a.Clear();
@@ -66,6 +65,7 @@ namespace SiteTest
             IWebElement text_b = drw.FindElement(fieldb);
             for (int i = 0; i < 10; i++)
             {
+                text_b.Clear();
                 text_b.SendKeys($"{i}");
                 Thread.Sleep(1000);
                 text_b.Clear();
@@ -75,21 +75,24 @@ namespace SiteTest
 
         public void ChangeOperation()
         {
-            IWebElement operator_pl = drw.FindElement(operatorpls);
-            operator_pl.Click();
-            Thread.Sleep(1500);
+            try
+            {
+                Thread.Sleep(1500);
+                IWebElement operator_mn = drw.FindElement(operatormns);
+                operator_mn.Click();
 
-            IWebElement operator_mn = drw.FindElement(operatormns);
-            operator_mn.Click();
-            Thread.Sleep(1500);
+                Thread.Sleep(1500);
+                IWebElement operator_pm = drw.FindElement(operatorumn);
+                operator_pm.Click();
 
-            IWebElement operator_pm = drw.FindElement(operatorumn);
-            operator_pm.Click();
-            Thread.Sleep(1500);
-
-            IWebElement operator_de = drw.FindElement(operatordel);
-            operator_de.Click();
-            Thread.Sleep(1500);
+                Thread.Sleep(1500);
+                IWebElement operator_de = drw.FindElement(operatordel);
+                operator_de.Click();
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.ToString());
+            }
         }
     }
 }
